@@ -1,0 +1,234 @@
+[
+  {
+    "id": "1",
+    "trackingToken": "SMC-2026-1042",
+    "citizenName": "Ramesh Kulkarni",
+    "mobileNumber": "9822012345",
+    "email": "ramesh.k@example.com",
+    "department": "Water Supply",
+    "ward": "Prabhag 2 - Jule Solapur",
+    "address": "Plot 42, Near Datta Mandir, Saiful, Jule Solapur",
+    "priority": "Urgent",
+    "title": "Low water pressure and erratic supply timing",
+    "description": "For the past 4 days, our lane in Saiful has been receiving water for only 15 minutes with extremely low pressure. Many residents are forced to buy private tankers. Please inspect the main distribution pipeline.",
+    "photoUrl": "",
+    "status": "In Progress",
+    "assignedOfficer": "Er. S. M. Shinde (Junior Engineer - Water Works)",
+    "officerRemarks": "Valve team inspected the distribution line near Datta Mandir. Air blockage detected in 150mm pipeline. Flushing and valve replacement in progress.",
+    "createdAt": "2026-10-12T09:30:00.000Z",
+    "updatedAt": "2026-10-14T11:45:00.000Z",
+    "timeline": [
+      {
+        "status": "Submitted",
+        "title": "Grievance Registered",
+        "description": "Complaint registered successfully by citizen via online portal.",
+        "timestamp": "2026-10-12T09:30:00.000Z"
+      },
+      {
+        "status": "Under Review",
+        "title": "Grievance Acknowledged",
+        "description": "Verified by Solapur Central Grievance Cell and forwarded to Water Works Dept.",
+        "timestamp": "2026-10-12T14:10:00.000Z"
+      },
+      {
+        "status": "Assigned",
+        "title": "Assigned to Ward Officer",
+        "description": "Assigned to Er. S. M. Shinde (Junior Engineer - Water Works, Zone 2).",
+        "timestamp": "2026-10-13T10:00:00.000Z"
+      },
+      {
+        "status": "In Progress",
+        "title": "Field Action Initiated",
+        "description": "Inspection completed. Valve repair and pipeline pressure correction underway.",
+        "timestamp": "2026-10-14T11:45:00.000Z"
+      }
+    ],
+    "feedback": null
+  },
+  {
+    "id": "2",
+    "trackingToken": "SMC-2026-2188",
+    "citizenName": "Pooja Deshmukh",
+    "mobileNumber": "9423587654",
+    "email": "pooja.d@example.com",
+    "department": "Solid Waste & Garbage",
+    "ward": "Prabhag 3 - Bhavani Peth",
+    "address": "Near Vegetable Market Corner, Bhavani Peth",
+    "priority": "High",
+    "title": "Garbage bin overflowing near market entry",
+    "description": "Garbage collection truck has not cleared the municipal bin near the vegetable market entrance for 3 days. Stray cattle and dogs are scattering waste onto the street, causing foul smell and hygiene risk.",
+    "photoUrl": "",
+    "status": "Resolved",
+    "assignedOfficer": "Shri. V. K. Jadhav (Sanitation Inspector)",
+    "officerRemarks": "Special dumper deployed. 2.5 metric tonnes waste cleared and area disinfected with bleaching powder. Daily morning route instructed.",
+    "createdAt": "2026-10-11T08:15:00.000Z",
+    "updatedAt": "2026-10-12T16:20:00.000Z",
+    "timeline": [
+      {
+        "status": "Submitted",
+        "title": "Grievance Registered",
+        "description": "Complaint registered successfully via citizen portal.",
+        "timestamp": "2026-10-11T08:15:00.000Z"
+      },
+      {
+        "status": "Under Review",
+        "title": "Grievance Acknowledged",
+        "description": "Acknowledged by Sanitation Department Helpdesk.",
+        "timestamp": "2026-10-11T10:00:00.000Z"
+      },
+      {
+        "status": "Assigned",
+        "title": "Assigned to Sanitation Inspector",
+        "description": "Assigned to Shri. V. K. Jadhav for Bhavani Peth division.",
+        "timestamp": "2026-10-11T11:30:00.000Z"
+      },
+      {
+        "status": "In Progress",
+        "title": "Cleanup In Progress",
+        "description": "Compactor vehicle deployed to site for complete evacuation.",
+        "timestamp": "2026-10-12T09:00:00.000Z"
+      },
+      {
+        "status": "Resolved",
+        "title": "Grievance Resolved",
+        "description": "Garbage cleared and bleaching powder sprinkled. Photo verification approved.",
+        "timestamp": "2026-10-12T16:20:00.000Z"
+      }
+    ],
+    "feedback": {
+      "rating": 5,
+      "comment": "Quick response by municipal sanitation team! Thank you SMC.",
+      "submittedAt": "2026-10-13T09:00:00.000Z"
+    }
+  },
+  {
+    "id": "3",
+    "trackingToken": "SMC-2026-3409",
+    "citizenName": "Anand Birajdar",
+    "mobileNumber": "9765432109",
+    "email": "anand.b@example.com",
+    "department": "Street Lighting",
+    "ward": "Prabhag 1 - Navi Peth",
+    "address": "Lane 3, Behind City Post Office, Navi Peth",
+    "priority": "Normal",
+    "title": "Three consecutive streetlights not functioning",
+    "description": "Poles #14, #15, and #16 in Lane 3 have dark LED fixtures for over a week. The lane is pitch dark at night, making it unsafe for senior citizens and women returning late.",
+    "photoUrl": "",
+    "status": "Under Review",
+    "assignedOfficer": null,
+    "officerRemarks": "",
+    "createdAt": "2026-10-15T11:20:00.000Z",
+    "updatedAt": "2026-10-15T11:20:00.000Z",
+    "timeline": [
+      {
+        "status": "Submitted",
+        "title": "Grievance Registered",
+        "description": "Complaint registered successfully via online portal.",
+        "timestamp": "2026-10-15T11:20:00.000Z"
+      },
+      {
+        "status": "Under Review",
+        "title": "Under Preliminary Review",
+        "description": "Queued for Electrical Maintenance Division, Zone 1.",
+        "timestamp": "2026-10-15T14:00:00.000Z"
+      }
+    ],
+    "feedback": null
+  },
+  {
+    "id": "4",
+    "trackingToken": "SMC-2026-4851",
+    "citizenName": "Sunita Patil",
+    "mobileNumber": "9850123987",
+    "email": "sunita.p@example.com",
+    "department": "Roads & Potholes",
+    "ward": "Prabhag 4 - Saat Rasta",
+    "address": "Main Junction approaching Railway Overbridge, Saat Rasta",
+    "priority": "Urgent",
+    "title": "Large pothole causing vehicle skidding at junction",
+    "description": "A deep trench / pothole has formed right in the middle of Saat Rasta junction following recent rains. Two two-wheelers skidded yesterday. Urgent asphalt patch repair required.",
+    "photoUrl": "",
+    "status": "Assigned",
+    "assignedOfficer": "Er. P. K. More (Executive Engineer - Roads)",
+    "officerRemarks": "Work order issued to quick response bitumen squad. Material dispatch planned for tonight during low traffic hours.",
+    "createdAt": "2026-10-14T15:40:00.000Z",
+    "updatedAt": "2026-10-15T08:30:00.000Z",
+    "timeline": [
+      {
+        "status": "Submitted",
+        "title": "Grievance Registered",
+        "description": "Complaint registered with high priority.",
+        "timestamp": "2026-10-14T15:40:00.000Z"
+      },
+      {
+        "status": "Under Review",
+        "title": "Reviewed by Road Maintenance Cell",
+        "description": "Priority verified as traffic hazard near junction.",
+        "timestamp": "2026-10-14T17:15:00.000Z"
+      },
+      {
+        "status": "Assigned",
+        "title": "Assigned to Roads Division",
+        "description": "Assigned to Er. P. K. More for immediate cold-mix/asphalt patch repair.",
+        "timestamp": "2026-10-15T08:30:00.000Z"
+      }
+    ],
+    "feedback": null
+  },
+  {
+    "id": "5",
+    "trackingToken": "SMC-2026-5593",
+    "citizenName": "Mohammad Irfan Shaikh",
+    "mobileNumber": "9970112233",
+    "email": "irfan.s@example.com",
+    "department": "Drainage & Sewerage",
+    "ward": "Prabhag 5 - Ashok Chowk",
+    "address": "Opposite Urdu Primary School, Ashok Chowk",
+    "priority": "High",
+    "title": "Sewage manhole overflowing onto pedestrian walkway",
+    "description": "Drain chamber is blocked and contaminated black water is overflowing onto the school pedestrian approach road. Pungent odor and health hazard for school children.",
+    "photoUrl": "",
+    "status": "Resolved",
+    "assignedOfficer": "Shri. G. N. Gaikwad (Superintendent - Drainage)",
+    "officerRemarks": "Suction jetting machine deployed to Ashok Chowk chamber. Heavy silt and plastic obstruction extracted. Chamber cleared and closed with secure concrete lid.",
+    "createdAt": "2026-10-10T12:00:00.000Z",
+    "updatedAt": "2026-10-11T17:45:00.000Z",
+    "timeline": [
+      {
+        "status": "Submitted",
+        "title": "Grievance Registered",
+        "description": "Complaint registered.",
+        "timestamp": "2026-10-10T12:00:00.000Z"
+      },
+      {
+        "status": "Under Review",
+        "title": "Urgent Review Completed",
+        "description": "Directly flagged to Drainage Department.",
+        "timestamp": "2026-10-10T13:30:00.000Z"
+      },
+      {
+        "status": "Assigned",
+        "title": "Officer Assigned",
+        "description": "Assigned to Shri. G. N. Gaikwad with suction machine team.",
+        "timestamp": "2026-10-10T14:45:00.000Z"
+      },
+      {
+        "status": "In Progress",
+        "title": "Jetting Operation Undertaken",
+        "description": "Super suction machine cleared 40m conduit pipe.",
+        "timestamp": "2026-10-11T10:15:00.000Z"
+      },
+      {
+        "status": "Resolved",
+        "title": "Grievance Resolved",
+        "description": "Full clearance confirmed, road disinfected with lime and phenyle.",
+        "timestamp": "2026-10-11T17:45:00.000Z"
+      }
+    ],
+    "feedback": {
+      "rating": 5,
+      "comment": "Super fast resolution! Drain unblocked within 24 hours.",
+      "submittedAt": "2026-10-12T08:30:00.000Z"
+    }
+  }
+]

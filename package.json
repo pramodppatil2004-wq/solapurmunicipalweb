@@ -1,0 +1,22 @@
+{
+  "name": "solapur-municipal-corporation-grievance",
+  "version": "1.0.0",
+  "description": "Digital Grievance Redressal System for Solapur Municipal Corporation (सोलापूर महानगरपालिका)",
+  "main": "backend/src/server.js",
+  "scripts": {
+    "start": "node backend/src/server.js",
+    "server": "node backend/src/server.js",
+    "dev": "node backend/src/server.js",
+    "setup": "cd backend && npm install"
+  },
+  "keywords": [
+    "solapur",
+    "municipal-corporation",
+    "grievance-redressal",
+    "citizen-portal",
+    "e-governance",
+    "civic-complaints"
+  ],
+  "author": "Solapur Municipal Corporation IT Cell",
+  "license": "MIT"
+}

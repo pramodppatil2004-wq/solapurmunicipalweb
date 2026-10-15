@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="smcBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A3981" />
+      <stop offset="100%" stop-color="#1E6091" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Circle -->
+  <circle cx="50" cy="50" r="48" fill="#FFFFFF" stroke="#0A3981" stroke-width="3.5" />
+  <circle cx="50" cy="50" r="43" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="2 1" />
+
+  <!-- Inner Municipal Blue Disk -->
+  <circle cx="50" cy="50" r="38" fill="url(#smcBlueGrad)" />
+
+  <!-- Fort Bastion / Civic Emblem (Symbolizing historic Solapur Bhuikot Fort) -->
+  <!-- Fort battlements / crown -->
+  <path d="M 32 37 L 32 30 L 37 30 L 37 33 L 42 33 L 42 30 L 47 30 L 47 33 L 53 33 L 53 30 L 58 30 L 58 33 L 63 33 L 63 30 L 68 30 L 68 37 Z" fill="#FFFFFF" />
+  
+  <!-- Fort Main Structure -->
+  <path d="M 34 37 L 66 37 L 64 56 L 36 56 Z" fill="#EBF3FB" />
+  
+  <!-- Fort Arched Gate -->
+  <path d="M 44 56 L 44 45 C 44 41 56 41 56 45 L 56 56 Z" fill="#0A3981" />
+
+  <!-- Textile Spindle / Civic Growth Gear (Solapur Textile Hub Emblem) -->
+  <circle cx="50" cy="67" r="10" fill="#FFFFFF" stroke="#D97706" stroke-width="2" />
+  <path d="M 50 57 L 50 77 M 40 67 L 60 67 M 43 60 L 57 74 M 43 74 L 57 60" stroke="#0A3981" stroke-width="1.8" />
+  <circle cx="50" cy="67" r="3.5" fill="#D97706" />
+
+  <!-- Decorative Stars -->
+  <polygon points="20,50 22,51 21,53 23,52 24,54 24,52 26,51 24,50 24,48 23,50" fill="#FFFFFF" />
+  <polygon points="80,50 78,51 79,53 77,52 76,54 76,52 74,51 76,50 76,48 77,50" fill="#FFFFFF" />
+
+  <!-- Ashoka Chakra 24 rays motif miniature in sky -->
+  <circle cx="50" cy="22" r="4.5" fill="none" stroke="#FFFFFF" stroke-width="1" />
+  <circle cx="50" cy="22" r="1.5" fill="#FFFFFF" />
+</svg>
