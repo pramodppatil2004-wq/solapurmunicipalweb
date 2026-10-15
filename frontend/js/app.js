@@ -54,7 +54,7 @@ const app = {
   },
 
   showView(viewName, updateHash = true) {
-    const views = ['home', 'file', 'track', 'feed', 'directory', 'admin'];
+    const views = ['home', 'file', 'track', 'admin'];
     if (!views.includes(viewName)) viewName = 'home';
 
     this.currentView = viewName;
@@ -94,10 +94,10 @@ const app = {
     // View specific hooks
     if (viewName === 'home') {
       this.loadStats();
-    } else if (viewName === 'feed') {
-      this.loadTransparencyFeed();
     } else if (viewName === 'admin') {
-      adminHandler.checkSession();
+      if (typeof adminHandler !== 'undefined') {
+        adminHandler.checkSession();
+      }
     }
   },
 
@@ -149,54 +149,6 @@ const app = {
       }
     } catch (e) {
       console.warn('Could not load live stats from API:', e.message);
-    }
-  },
-
-  async loadTransparencyFeed() {
-    const tbody = document.getElementById('transparencyTableBody');
-    if (!tbody) return;
-
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px;">Loading public transparency records...</td></tr>';
-
-    try {
-      const res = await api.getStats();
-      const list = (res && res.data && res.data.publicFeed) || [];
-
-      if (list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px;">No public complaints recorded yet.</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = list.map(item => {
-        const date = new Date(item.createdAt).toLocaleDateString('en-IN', {
-          day: 'numeric', month: 'short', year: 'numeric'
-        });
-
-        const statusBadge = this.getStatusBadge(item.status);
-        const ratingDisplay = item.feedback && item.feedback.rating 
-          ? `⭐ ${item.feedback.rating}/5` 
-          : '<span style="color:#94A3B8;">Pending</span>';
-
-        return `
-          <tr>
-            <td>
-              <a href="#track" onclick="trackingHandler.quickSearch('${item.trackingToken}')" style="font-weight:700;">
-                ${item.trackingToken}
-              </a>
-            </td>
-            <td><strong>${item.department}</strong></td>
-            <td>${item.ward}</td>
-            <td style="max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${item.title}">
-              ${item.title}
-            </td>
-            <td>${statusBadge}</td>
-            <td>${date}</td>
-            <td>${ratingDisplay}</td>
-          </tr>
-        `;
-      }).join('');
-    } catch (error) {
-      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: red; padding: 20px;">Error loading transparency records: ${error.message}</td></tr>`;
     }
   },
 

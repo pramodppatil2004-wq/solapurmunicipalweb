@@ -1,10 +1,10 @@
 const GrievanceStore = require('../models/grievanceStore');
 
 const statsController = {
-  getOverview(req, res) {
+  async getOverview(req, res) {
     try {
-      const stats = GrievanceStore.getStats();
-      const all = GrievanceStore.getAll();
+      const stats = await GrievanceStore.getStats();
+      const all = await GrievanceStore.getAll();
 
       // Recent 5 public resolved or in-progress complaints for transparency feed (citizen names masked)
       const publicFeed = all

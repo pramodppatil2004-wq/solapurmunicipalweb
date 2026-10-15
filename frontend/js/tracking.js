@@ -145,6 +145,17 @@ const trackingHandler = {
               ${g.assignedOfficer || '⏳ Allocation in progress by Zonal Office'}
             </div>
           </div>
+          ${g.latitude && g.longitude ? `
+            <div>
+              <div class="info-item-label">Geo-tag Incident Location</div>
+              <div class="info-item-value" style="display: flex; align-items: center; gap: 8px;">
+                <span>📍 ${g.latitude}° N, ${g.longitude}° E</span>
+                <a href="https://www.google.com/maps?q=${g.latitude},${g.longitude}" target="_blank" class="btn btn-outline btn-sm" style="padding: 2px 8px; font-size: 0.75rem;">
+                  🗺️ Map
+                </a>
+              </div>
+            </div>
+          ` : ''}
           ${g.officerRemarks ? `
             <div style="grid-column: 1 / -1;">
               <div class="info-item-label">Official Resolution Notes / Remarks</div>
@@ -155,11 +166,31 @@ const trackingHandler = {
           ` : ''}
         </div>
 
-        <!-- Photo preview if uploaded -->
-        ${g.photoUrl ? `
+        <!-- Photo Evidence & Work Done Proof Section -->
+        ${(g.photoUrl || g.resolutionPhotoUrl) ? `
           <div style="margin-bottom: 24px;">
-            <div class="info-item-label" style="margin-bottom: 6px;">Citizen Photo Evidence</div>
-            <img src="${g.photoUrl}" alt="Complaint Photo" style="max-width: 260px; max-height: 200px; border-radius: 8px; border: 1px solid #CBD5E1; cursor: pointer;" onclick="window.open('${g.photoUrl}')">
+            <div class="info-item-label" style="margin-bottom: 8px;">📸 Photographic Verification & Evidence</div>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+              ${g.photoUrl ? `
+                <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 10px; max-width: 280px;">
+                  <div style="font-size: 0.78rem; font-weight: 700; color: #1D63B8; margin-bottom: 6px;">
+                    📌 Citizen Photo (Reported Issue)
+                  </div>
+                  <img src="${g.photoUrl}" alt="Citizen Complaint Photo" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 6px; border: 1px solid #CBD5E1; cursor: pointer;" onclick="window.open('${g.photoUrl}')">
+                  <span style="font-size: 0.72rem; color: #64748B; display: block; margin-top: 4px;">Click image to view full size</span>
+                </div>
+              ` : ''}
+
+              ${g.resolutionPhotoUrl ? `
+                <div style="background: #ECFDF5; border: 1.5px solid #10B981; border-radius: 8px; padding: 10px; max-width: 280px;">
+                  <div style="font-size: 0.78rem; font-weight: 700; color: #065F46; margin-bottom: 6px;">
+                    ✅ Work Done Photo (Municipal Resolution Proof)
+                  </div>
+                  <img src="${g.resolutionPhotoUrl}" alt="Work Done Resolution Photo" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 6px; border: 1px solid #6EE7B7; cursor: pointer;" onclick="window.open('${g.resolutionPhotoUrl}')">
+                  <span style="font-size: 0.72rem; color: #047857; font-weight: 600; display: block; margin-top: 4px;">Uploaded by SMC Municipal Administration</span>
+                </div>
+              ` : ''}
+            </div>
           </div>
         ` : ''}
 

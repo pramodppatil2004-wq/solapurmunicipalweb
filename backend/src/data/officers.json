@@ -1,0 +1,15 @@
+[
+  {
+    "id": "OFF-001",
+    "employeeId": "SMC-ADMIN-01",
+    "fullName": "Shri. A. K. Patil",
+    "designation": "Municipal Grievance Administrator",
+    "department": "Central Administration",
+    "role": "Single Administrator",
+    "username": "admin",
+    "email": "admin@solapurcorporation.gov.in",
+    "mobileNumber": "9422011223",
+    "passwordHash": "f7e4c2fa8927763ccf91e57b70f6e6c91ea7da4b1f9caacb66f2c4ed53310319",
+    "createdAt": "2026-10-01T08:00:00.000Z"
+  }
+]

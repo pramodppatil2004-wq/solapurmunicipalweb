@@ -1,6 +1,7 @@
-// Citizen Grievance Filing Logic
+// Citizen Grievance Filing Logic with Geotagging and Authorization
 const complaintHandler = {
   currentPhotoBase64: '',
+  currentLocation: null,
 
   selectDepartment(deptName) {
     const hiddenInput = document.getElementById('selectedDepartment');
@@ -35,6 +36,123 @@ const complaintHandler = {
     if (countEl) {
       countEl.textContent = textarea.value.length;
     }
+  },
+
+  // ---------------- Geotagging Feature ----------------
+  captureLocation() {
+    const statusEl = document.getElementById('geoStatusText');
+    const displayBox = document.getElementById('geoPreviewBox');
+    const coordsDisplay = document.getElementById('geoCoordsDisplay');
+    const mapLink = document.getElementById('geoMapLink');
+    const btn = document.getElementById('btnCaptureLocation');
+
+    if (!navigator.geolocation) {
+      app.showToast('Geolocation is not supported by your browser.', 'error');
+      this.setDefaultSolapurCoordinates();
+      return;
+    }
+
+    if (btn) btn.disabled = true;
+    if (statusEl) {
+      statusEl.style.display = 'block';
+      statusEl.innerHTML = '🛰️ Connecting to GPS satellites & acquiring live coordinates...';
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude.toFixed(6);
+        const lng = position.coords.longitude.toFixed(6);
+        const acc = Math.round(position.coords.accuracy || 15);
+
+        this.currentLocation = {
+          latitude: parseFloat(lat),
+          longitude: parseFloat(lng),
+          accuracy: acc,
+          geoAddress: `GPS Fixed (±${acc}m accuracy)`
+        };
+
+        if (statusEl) {
+          statusEl.innerHTML = '✅ <strong style="color:#059669;">GPS Lock Acquired Successfully!</strong>';
+        }
+        if (coordsDisplay) {
+          coordsDisplay.textContent = `📍 ${lat}° N, ${lng}° E (Accuracy: ±${acc}m)`;
+        }
+        if (mapLink) {
+          mapLink.href = `https://www.google.com/maps?q=${lat},${lng}`;
+          mapLink.style.display = 'inline-flex';
+        }
+        if (displayBox) {
+          displayBox.style.display = 'block';
+        }
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '🔄 Re-Capture GPS Location';
+        }
+
+        app.showToast(`Geo-tag captured: ${lat}, ${lng}`, 'success');
+      },
+      (error) => {
+        console.warn('Geolocation error:', error);
+        if (btn) btn.disabled = false;
+        
+        let msg = 'Unable to retrieve location.';
+        if (error.code === 1) msg = 'Location access was denied. Setting Solapur Municipal Center as reference.';
+        else if (error.code === 2) msg = 'Position unavailable. Setting Solapur reference point.';
+        else if (error.code === 3) msg = 'GPS timeout. Setting Solapur reference point.';
+
+        app.showToast(msg, 'info');
+        this.setDefaultSolapurCoordinates();
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    );
+  },
+
+  setDefaultSolapurCoordinates() {
+    // Solapur Municipal Corporation HQ coordinates (17.6599° N, 75.9064° E)
+    const lat = 17.659918;
+    const lng = 75.906388;
+    this.currentLocation = {
+      latitude: lat,
+      longitude: lng,
+      accuracy: 50,
+      geoAddress: 'Solapur City Reference Coordinates'
+    };
+
+    const statusEl = document.getElementById('geoStatusText');
+    const displayBox = document.getElementById('geoPreviewBox');
+    const coordsDisplay = document.getElementById('geoCoordsDisplay');
+    const mapLink = document.getElementById('geoMapLink');
+
+    if (statusEl) {
+      statusEl.style.display = 'block';
+      statusEl.innerHTML = '📍 <strong>Solapur Municipal Center Coordinates Applied</strong>';
+    }
+    if (coordsDisplay) {
+      coordsDisplay.textContent = `📍 ${lat}° N, ${lng}° E (Solapur Central Reference)`;
+    }
+    if (mapLink) {
+      mapLink.href = `https://www.google.com/maps?q=${lat},${lng}`;
+      mapLink.style.display = 'inline-flex';
+    }
+    if (displayBox) {
+      displayBox.style.display = 'block';
+    }
+  },
+
+  clearLocation() {
+    this.currentLocation = null;
+    const displayBox = document.getElementById('geoPreviewBox');
+    const statusEl = document.getElementById('geoStatusText');
+    const btn = document.getElementById('btnCaptureLocation');
+
+    if (displayBox) displayBox.style.display = 'none';
+    if (statusEl) statusEl.style.display = 'none';
+    if (btn) btn.innerHTML = '📍 Auto-Detect My Live GPS Location (Geo-tag Incident)';
+    app.showToast('Geo-tag removed from complaint.', 'info');
   },
 
   handlePhotoUpload(event) {
@@ -75,16 +193,28 @@ const complaintHandler = {
 
   resetForm() {
     this.removePhoto();
+    this.clearLocation();
     this.selectDepartment('');
     this.setPriority('Normal');
     const form = document.getElementById('grievanceForm');
     if (form) form.reset();
     const countEl = document.getElementById('charCount');
     if (countEl) countEl.textContent = '0';
+
+    if (citizenAuth.currentCitizen) {
+      citizenAuth.autoFillComplaintForm(citizenAuth.currentCitizen);
+    }
   },
 
   async handleSubmit(event) {
     event.preventDefault();
+
+    // Check citizen authorization requirement
+    if (!citizenAuth.currentCitizen) {
+      app.showToast('Citizen Registration Required: Please Log In or Register first.', 'error');
+      citizenAuth.openAuthModal('login');
+      return;
+    }
 
     const citizenName = document.getElementById('citizenName').value.trim();
     const mobileNumber = document.getElementById('mobileNumber').value.trim();
@@ -143,6 +273,7 @@ const complaintHandler = {
       }
 
       const payload = {
+        citizenId: citizenAuth.currentCitizen ? citizenAuth.currentCitizen.id : null,
         citizenName,
         mobileNumber,
         email,
@@ -152,7 +283,10 @@ const complaintHandler = {
         priority,
         title,
         description,
-        photoUrl: this.currentPhotoBase64
+        photoUrl: this.currentPhotoBase64,
+        latitude: this.currentLocation ? this.currentLocation.latitude : null,
+        longitude: this.currentLocation ? this.currentLocation.longitude : null,
+        geoAddress: this.currentLocation ? this.currentLocation.geoAddress : ''
       };
 
       const res = await api.createGrievance(payload);
@@ -167,6 +301,7 @@ const complaintHandler = {
         const rDept = document.getElementById('receiptDept');
         const rWard = document.getElementById('receiptWard');
         const rDate = document.getElementById('receiptDate');
+        const rGeo = document.getElementById('receiptGeoVal');
 
         if (tokenVal) tokenVal.textContent = item.trackingToken;
         if (rName) rName.textContent = item.citizenName;
@@ -177,6 +312,13 @@ const complaintHandler = {
           rDate.textContent = d.toLocaleString('en-IN', {
             day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
           });
+        }
+        if (rGeo) {
+          if (item.latitude && item.longitude) {
+            rGeo.innerHTML = `📍 ${item.latitude}, ${item.longitude} (<a href="https://www.google.com/maps?q=${item.latitude},${item.longitude}" target="_blank" style="color:#2563EB;">View Map</a>)`;
+          } else {
+            rGeo.textContent = 'Not geo-tagged';
+          }
         }
 
         // Reset form and show modal

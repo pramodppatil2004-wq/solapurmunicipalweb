@@ -5,6 +5,9 @@ const grievanceController = require('../controllers/grievanceController');
 // List complaints with query filters (?status=...&department=...&search=...)
 router.get('/', grievanceController.getAll);
 
+// List grievances filed by logged-in citizen
+router.get('/my', grievanceController.getMy);
+
 // Track complaint by token (SMC-2026-XXXX) or mobile number
 router.get('/track/:query', grievanceController.track);
 

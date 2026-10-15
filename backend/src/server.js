@@ -3,6 +3,7 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
+const { connectDB, isMongoConnected } = require('./config/db');
 const grievanceRoutes = require('./routes/grievanceRoutes');
 const authRoutes = require('./routes/authRoutes');
 const statsRoutes = require('./routes/statsRoutes');
@@ -31,6 +32,8 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
     portal: 'Solapur Municipal Corporation - Digital Grievance Redressal System',
+    database: isMongoConnected() ? 'MongoDB (Connected)' : 'Local JSON Store (Resilient Fallback Mode)',
+    mongoConnected: isMongoConnected(),
     timestamp: new Date().toISOString()
   });
 });
@@ -43,13 +46,21 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log('==================================================================');
-  console.log('  🏛️  SOLAPUR MUNICIPAL CORPORATION (सोलापूर महानगरपालिका)');
-  console.log('  Digital Grievance Redressal System is running successfully!');
-  console.log(`  🌐 Portal URL:   http://localhost:${PORT}`);
-  console.log(`  📡 API Health:   http://localhost:${PORT}/api/health`);
-  console.log(`  👮 Officer Demo: admin / solapur@123`);
-  console.log('==================================================================');
-});
+// Connect to MongoDB & Start server
+async function startServer() {
+  // Connect to MongoDB (with auto-seeding & graceful fallback)
+  await connectDB();
+
+  app.listen(PORT, () => {
+    console.log('==================================================================');
+    console.log('  🏛️  SOLAPUR MUNICIPAL CORPORATION (सोलापूर महानगरपालिका)');
+    console.log('  Digital Grievance Redressal System is running successfully!');
+    console.log(`  🌐 Portal URL:   http://localhost:${PORT}`);
+    console.log(`  📡 API Health:   http://localhost:${PORT}/api/health`);
+    console.log(`  🍃 Database:     ${isMongoConnected() ? 'MongoDB Connected' : 'Resilient JSON Store'}`);
+    console.log(`  👮 Admin Demo:   admin / solapur@123`);
+    console.log('==================================================================');
+  });
+}
+
+startServer();

@@ -1,7 +1,9 @@
-// Solapur Municipal Corporation - Officer Portal & Administrative Panel
+// Solapur Municipal Corporation - Single Admin Grievance Management Panel
 const adminHandler = {
   complaints: [],
   filteredComplaints: [],
+  currentAdmin: null,
+  currentWorkDonePhoto: '',
 
   checkSession() {
     const token = localStorage.getItem('smc_officer_token');
@@ -13,7 +15,8 @@ const adminHandler = {
     api.verifySession()
       .then(res => {
         if (res && res.valid) {
-          this.showDashboardView(res.officer);
+          this.currentAdmin = res.officer || { username: 'admin', fullName: 'Municipal Administrator', designation: 'Chief Grievance Officer' };
+          this.showDashboardView(this.currentAdmin);
           this.loadComplaints();
         } else {
           this.showLoginView();
@@ -31,17 +34,19 @@ const adminHandler = {
     if (dashSec) dashSec.style.display = 'none';
   },
 
-  showDashboardView(officer) {
+  showDashboardView(admin) {
     const loginSec = document.getElementById('adminLoginSection');
     const dashSec = document.getElementById('adminDashboardSection');
     if (loginSec) loginSec.style.display = 'none';
     if (dashSec) dashSec.style.display = 'block';
 
-    if (officer) {
-      const nameEl = document.getElementById('officerNameDisplay');
-      const deptEl = document.getElementById('officerDeptDisplay');
-      if (nameEl && officer.name) nameEl.textContent = `${officer.name} (${officer.designation || 'Officer'})`;
-      if (deptEl && officer.department) deptEl.textContent = officer.department;
+    const nameEl = document.getElementById('officerNameDisplay');
+    const deptEl = document.getElementById('officerDeptDisplay');
+    if (nameEl) {
+      nameEl.innerHTML = `🛡️ ${admin.fullName || 'Municipal Administrator'} <span style="font-size: 0.8rem; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; margin-left: 6px;">Admin Authorized</span>`;
+    }
+    if (deptEl) {
+      deptEl.textContent = `Solapur Municipal Corporation • Central Grievance Redressal Cell (ID: ${admin.employeeId || 'SMC-ADMIN-01'})`;
     }
   },
 
@@ -50,7 +55,7 @@ const adminHandler = {
     const passIn = document.getElementById('adminPassword');
     if (userIn) userIn.value = 'admin';
     if (passIn) passIn.value = 'solapur@123';
-    app.showToast('Credentials filled. Click "Log In to Dashboard".', 'info');
+    app.showToast('Single Admin credentials filled (admin / solapur@123)', 'info');
   },
 
   async handleLogin(event) {
@@ -60,23 +65,23 @@ const adminHandler = {
     const password = document.getElementById('adminPassword').value;
 
     const btn = document.getElementById('btnAdminLogin');
-    const originalText = btn ? btn.innerHTML : 'Log In';
+    const originalText = btn ? btn.innerHTML : 'Log In as Municipal Admin';
 
     try {
       if (btn) {
         btn.disabled = true;
-        btn.innerHTML = 'Verifying Credentials...';
+        btn.innerHTML = 'Verifying Admin Authority...';
       }
 
       const res = await api.login(username, password);
       if (res && res.success && res.token) {
         localStorage.setItem('smc_officer_token', res.token);
-        app.showToast('Login successful. Welcome to Solapur Municipal Officer Portal.', 'success');
+        app.showToast('Admin authorized successfully. Welcome to SMC Management Console.', 'success');
         this.showDashboardView(res.officer);
         this.loadComplaints();
       }
     } catch (error) {
-      app.showToast(error.message || 'Authentication failed. Please verify credentials.', 'error');
+      app.showToast(error.message || 'Authentication failed. Please check admin credentials.', 'error');
     } finally {
       if (btn) {
         btn.disabled = false;
@@ -87,14 +92,15 @@ const adminHandler = {
 
   handleLogout() {
     localStorage.removeItem('smc_officer_token');
+    this.currentAdmin = null;
     this.showLoginView();
-    app.showToast('Logged out of Officer Portal successfully.', 'info');
+    app.showToast('Admin logged out successfully.', 'info');
   },
 
   async loadComplaints() {
     const tbody = document.getElementById('adminTableBody');
     if (tbody) {
-      tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 24px;">Loading grievances data...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 24px;">Loading all Solapur municipal complaints...</td></tr>';
     }
 
     try {
@@ -182,6 +188,7 @@ const adminHandler = {
 
       const statusBadge = app.getStatusBadge(g.status);
       const isUrgent = (g.priority || '').toLowerCase() === 'urgent';
+      const hasWorkDonePhoto = Boolean(g.resolutionPhotoUrl);
 
       return `
         <tr>
@@ -200,17 +207,21 @@ const adminHandler = {
           <td style="max-width: 220px; font-size: 0.82rem;">
             <strong>${g.ward}</strong><br>
             <span style="color: #64748B;">${g.address}</span>
+            ${g.latitude && g.longitude ? `<br><a href="https://www.google.com/maps?q=${g.latitude},${g.longitude}" target="_blank" style="color: #059669; font-weight: 600; display: inline-flex; align-items: center; gap: 2px; margin-top: 2px;">📍 (${g.latitude}, ${g.longitude}) 🗺️</a>` : ''}
           </td>
           <td>
             <span class="badge ${isUrgent ? 'badge-urgent' : 'badge-submitted'}">
               ${g.priority}
             </span>
           </td>
-          <td>${statusBadge}</td>
+          <td>
+            ${statusBadge}
+            ${hasWorkDonePhoto ? `<div style="font-size: 0.75rem; color: #059669; font-weight: 700; margin-top: 4px;">📸 Work Done Photo Attached</div>` : ''}
+          </td>
           <td style="font-size: 0.82rem; white-space: nowrap;">${dateFormatted}</td>
           <td>
-            <button class="btn btn-outline btn-sm" onclick="adminHandler.openStatusModal('${g.id}', '${g.trackingToken}', '${g.status}', '${(g.assignedOfficer || '').replace(/'/g, "\\'")}', '${(g.officerRemarks || '').replace(/'/g, "\\'")}')">
-              ✏️ Update
+            <button class="btn btn-outline btn-sm" onclick="adminHandler.openStatusModal('${g.id}', '${g.trackingToken}', '${g.status}', '${(g.assignedOfficer || '').replace(/'/g, "\\'")}', '${(g.officerRemarks || '').replace(/'/g, "\\'")}', '${(g.resolutionPhotoUrl || '').replace(/'/g, "\\'")}')">
+              ✏️ Action & Update
             </button>
           </td>
         </tr>
@@ -218,7 +229,8 @@ const adminHandler = {
     }).join('');
   },
 
-  openStatusModal(id, token, currentStatus, currentOfficer, currentRemarks) {
+  // ---------------- Status & Work Done Photo Modal ----------------
+  openStatusModal(id, token, currentStatus, currentOfficer, currentRemarks, currentWorkDonePhoto) {
     const idInput = document.getElementById('modalGrievanceId');
     const tokenDisplay = document.getElementById('modalStatusToken');
     const statusSelect = document.getElementById('modalStatusSelect');
@@ -231,7 +243,58 @@ const adminHandler = {
     if (officerInput) officerInput.value = currentOfficer || '';
     if (remarksInput) remarksInput.value = currentRemarks || '';
 
+    // Handle Work Done Photo Preview
+    this.currentWorkDonePhoto = currentWorkDonePhoto || '';
+    const previewContainer = document.getElementById('workDonePhotoPreviewContainer');
+    const previewImg = document.getElementById('workDonePhotoPreviewImg');
+    const fileInput = document.getElementById('workDonePhotoInput');
+    if (fileInput) fileInput.value = '';
+
+    if (this.currentWorkDonePhoto && previewContainer && previewImg) {
+      previewImg.src = this.currentWorkDonePhoto;
+      previewContainer.style.display = 'inline-block';
+    } else if (previewContainer) {
+      previewContainer.style.display = 'none';
+    }
+
     app.openModal('statusModal');
+  },
+
+  handleWorkDonePhotoUpload(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      app.showToast('Please upload an image file (JPG, PNG).', 'error');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      app.showToast('Image exceeds 5MB limit. Please upload a smaller photo.', 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.currentWorkDonePhoto = e.target.result;
+      const previewCont = document.getElementById('workDonePhotoPreviewContainer');
+      const previewImg = document.getElementById('workDonePhotoPreviewImg');
+      if (previewCont && previewImg) {
+        previewImg.src = this.currentWorkDonePhoto;
+        previewCont.style.display = 'inline-block';
+      }
+      app.showToast('Work done proof photo uploaded successfully.', 'success');
+    };
+    reader.readAsDataURL(file);
+  },
+
+  removeWorkDonePhoto() {
+    this.currentWorkDonePhoto = '';
+    const fileInput = document.getElementById('workDonePhotoInput');
+    if (fileInput) fileInput.value = '';
+    const previewCont = document.getElementById('workDonePhotoPreviewContainer');
+    if (previewCont) previewCont.style.display = 'none';
+    app.showToast('Work done photo removed.', 'info');
   },
 
   async submitStatusUpdate(event) {
@@ -242,21 +305,35 @@ const adminHandler = {
     const assignedOfficer = document.getElementById('modalAssignOfficer').value.trim();
     const officerRemarks = document.getElementById('modalRemarks').value.trim();
 
+    const btn = event.submitter || document.querySelector('#statusModal button[type="submit"]');
+    const origText = btn ? btn.innerHTML : 'Update Status';
+
     try {
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = 'Saving Changes...';
+      }
+
       const res = await api.updateStatus(id, {
         status,
         assignedOfficer,
-        officerRemarks
+        officerRemarks,
+        resolutionPhotoUrl: this.currentWorkDonePhoto
       });
 
       if (res && res.success) {
-        app.showToast(`Status updated to "${status}" successfully.`, 'success');
+        app.showToast(`Status updated to "${status}" successfully with work proof!`, 'success');
         app.closeModal('statusModal');
         this.loadComplaints();
         app.loadStats();
       }
     } catch (e) {
       app.showToast(e.message || 'Error updating status', 'error');
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = origText;
+      }
     }
   },
 
@@ -275,10 +352,13 @@ const adminHandler = {
       'Department',
       'Ward',
       'Address',
+      'Latitude',
+      'Longitude',
       'Priority',
       'Status',
       'Assigned Officer',
       'Officer Remarks',
+      'Has Work Done Photo',
       'Registration Date'
     ];
 
@@ -290,10 +370,13 @@ const adminHandler = {
       `"${g.department || ''}"`,
       `"${(g.ward || '').replace(/"/g, '""')}"`,
       `"${(g.address || '').replace(/"/g, '""')}"`,
+      `"${g.latitude || ''}"`,
+      `"${g.longitude || ''}"`,
       `"${g.priority || ''}"`,
       `"${g.status || ''}"`,
       `"${(g.assignedOfficer || '').replace(/"/g, '""')}"`,
       `"${(g.officerRemarks || '').replace(/"/g, '""')}"`,
+      `"${Boolean(g.resolutionPhotoUrl) ? 'YES' : 'NO'}"`,
       `"${new Date(g.createdAt).toISOString()}"`
     ]);
 

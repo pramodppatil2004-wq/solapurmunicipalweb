@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solapur Municipal Corporation - Digital Grievance Redressal System</title>
-  <meta name="description" content="Official Digital Grievance Redressal Portal for Solapur Municipal Corporation (सोलापूर महानगरपालिका). Register and track civic complaints online.">
+  <meta name="description" content="Official Digital Grievance Redressal Portal for Solapur Municipal Corporation (सोलापूर महानगरपालिका). Register, track, and administer civic complaints online with GPS Geotagging.">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -37,12 +37,18 @@
           </div>
         </a>
         <div class="header-actions">
+          <!-- Citizen Auth Status Container -->
+          <div id="citizenHeaderContainer">
+            <!-- Populated via citizenAuth.js -->
+          </div>
+
           <div class="helpline-box">
             <span class="helpline-label">Civic Control Room (24x7)</span>
             <span class="helpline-number">1800-233-0217</span>
           </div>
+
           <button class="nav-officer-btn" onclick="app.showView('admin')">
-            <span>🛡️</span> Officer Portal
+            <span>🛡️</span> Admin Portal
           </button>
         </div>
       </div>
@@ -59,9 +65,7 @@
         <li><a class="nav-link active" data-view="home" onclick="app.showView('home')">🏠 Home</a></li>
         <li><a class="nav-link" data-view="file" onclick="app.showView('file')">📝 Lodge Grievance</a></li>
         <li><a class="nav-link" data-view="track" onclick="app.showView('track')">🔍 Track Status</a></li>
-        <li><a class="nav-link" data-view="feed" onclick="app.showView('feed')">📢 Transparency Feed</a></li>
-        <li><a class="nav-link" data-view="directory" onclick="app.showView('directory')">📞 Wards & Directory</a></li>
-        <li><a class="nav-link" data-view="admin" onclick="app.showView('admin')">👮 Municipal Officers</a></li>
+        <li><a class="nav-link" data-view="admin" onclick="app.showView('admin')">🛡️ Admin Portal</a></li>
       </ul>
       <div class="header-portal-date" style="color: #93C5FD; font-size: 0.85rem; font-weight: 600;" id="currentDateDisplay">
         <!-- Injected via JS -->
@@ -82,7 +86,7 @@
             <h2 class="hero-title">Smart Solapur Digital Grievance Redressal</h2>
             <p class="hero-desc">
               Solapur Municipal Corporation is committed to swift, transparent, and accountable civic services. 
-              Register complaints for water supply, roads, sanitation, street lighting, and drainage. Track resolution status in real-time.
+              Register verified complaints for water supply, roads, sanitation, street lighting, and drainage with <strong>live GPS Geo-tagging</strong>.
             </p>
             <div class="hero-actions">
               <button class="btn btn-primary btn-lg" onclick="app.showView('file')">
@@ -91,8 +95,8 @@
               <button class="btn btn-secondary btn-lg" onclick="app.showView('track')">
                 <span>🔍</span> Track Existing Complaint
               </button>
-              <button class="btn btn-outline" onclick="app.showView('feed')">
-                <span>📊</span> View Public Feed
+              <button class="btn btn-outline" onclick="citizenAuth.openAuthModal('register')">
+                <span>👤</span> Citizen Registration
               </button>
             </div>
           </div>
@@ -134,23 +138,23 @@
         <div class="form-card" style="margin-bottom: 28px;">
           <div class="section-header">
             <h3 class="section-title"><span>⚙️</span> How e-Grievance Works in 3 Simple Steps</h3>
-            <p class="section-subtitle">Zero paper work, immediate digital tracking token, and designated ward officer accountability.</p>
+            <p class="section-subtitle">Verified citizen registration, live GPS geotagging, and designated ward engineer accountability.</p>
           </div>
           <div class="form-grid-3">
             <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 20px; border-radius: 10px; border-top: 3px solid #0A3981;">
               <div style="font-size: 2rem; margin-bottom: 8px;">1️⃣</div>
-              <h4 style="color: #0A3981; font-size: 1.05rem; margin-bottom: 6px;">Register Complaint</h4>
-              <p style="font-size: 0.88rem; color: #475569;">Select your Solapur ward, choose category (Water, Roads, Waste, etc.), attach photos, and submit.</p>
+              <h4 style="color: #0A3981; font-size: 1.05rem; margin-bottom: 6px;">Register / Log In & Geotag</h4>
+              <p style="font-size: 0.88rem; color: #475569;">Sign in to your citizen account, auto-capture your live incident GPS coordinates, attach photos, and submit.</p>
             </div>
             <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 20px; border-radius: 10px; border-top: 3px solid #1D63B8;">
               <div style="font-size: 2rem; margin-bottom: 8px;">2️⃣</div>
-              <h4 style="color: #0A3981; font-size: 1.05rem; margin-bottom: 6px;">Ward Officer Assigned</h4>
-              <p style="font-size: 0.88rem; color: #475569;">Central Grievance Cell forwards the issue to the zonal engineer or sanitation inspector with an SLA deadline.</p>
+              <h4 style="color: #0A3981; font-size: 1.05rem; margin-bottom: 6px;">Ward Engineer Assigned</h4>
+              <p style="font-size: 0.88rem; color: #475569;">Central Grievance Cell maps the GPS coordinates and assigns the designated zonal officer with an SLA deadline.</p>
             </div>
             <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 20px; border-radius: 10px; border-top: 3px solid #16A34A;">
               <div style="font-size: 2rem; margin-bottom: 8px;">3️⃣</div>
               <h4 style="color: #0A3981; font-size: 1.05rem; margin-bottom: 6px;">Resolved & Feedback</h4>
-              <p style="font-size: 0.88rem; color: #475569;">Work is executed on the ground. Citizen receives completion details and submits satisfaction feedback.</p>
+              <p style="font-size: 0.88rem; color: #475569;">Civic work is completed on ground. Citizen receives completion notification and rates the municipal service.</p>
             </div>
           </div>
         </div>
@@ -169,116 +173,174 @@
       <section id="view-file" class="view-section">
         <div class="section-header">
           <h2 class="section-title"><span>📝</span> Register a Civic Grievance</h2>
-          <p class="section-subtitle">Fill in the details below. All fields marked with <span style="color:red">*</span> are mandatory for swift verification.</p>
+          <p class="section-subtitle">All citizens must be registered/logged in to ensure accountability, verified tracking, and SMS updates.</p>
+        </div>
+
+        <!-- Auth Requirement Banner (Visible when logged out) -->
+        <div id="authRequiredBanner" class="auth-required-banner">
+          <div>
+            <h4 style="color: #0A3981; font-size: 1.05rem; font-weight: 700; margin-bottom: 4px;">
+              🔒 Citizen Registration / Login Required
+            </h4>
+            <p style="color: #334155; font-size: 0.9rem;">
+              Please log in to your account or create a free citizen profile to lodge your complaint.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="citizenAuth.openAuthModal('login')">
+              🔑 Citizen Login
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="citizenAuth.openAuthModal('register')">
+              📝 Register Account
+            </button>
+          </div>
         </div>
 
         <div class="form-card">
           <form id="grievanceForm" onsubmit="complaintHandler.handleSubmit(event)">
             <!-- Citizen Details -->
-            <div class="form-group-title"><span>👤</span> Citizen Contact Information</div>
-            <div class="form-grid-3">
-              <div class="form-field">
-                <label class="form-label" for="citizenName">Full Name <span class="required">*</span></label>
-                <input type="text" id="citizenName" class="form-input" placeholder="e.g., Rajesh Sharma" required>
-              </div>
-              <div class="form-field">
-                <label class="form-label" for="mobileNumber">10-Digit Mobile Number <span class="required">*</span></label>
-                <input type="tel" id="mobileNumber" class="form-input" placeholder="e.g., 9822012345" pattern="[6-9][0-9]{9}" maxlength="10" required>
-                <small style="color: #64748B; font-size: 0.75rem;">Used for status tracking and SMS updates</small>
-              </div>
-              <div class="form-field">
-                <label class="form-label" for="email">Email Address (Optional)</label>
-                <input type="email" id="email" class="form-input" placeholder="e.g., rajesh@example.com">
-              </div>
-            </div>
-
-            <!-- Grievance Category Selection -->
-            <div class="form-group-title"><span>📂</span> Select Grievance Department / Category <span class="required">*</span></div>
-            <div class="category-picker-grid" id="formCategoryGrid">
-              <!-- Rendered via JS -->
-            </div>
-            <input type="hidden" id="selectedDepartment" value="">
-
-            <!-- Location & Ward Selection -->
-            <div class="form-group-title"><span>📍</span> Solapur Location & Ward (प्रभाग) Details</div>
-            <div class="form-grid-2">
-              <div class="form-field">
-                <label class="form-label" for="wardSelect">Municipal Ward / Prabhag <span class="required">*</span></label>
-                <select id="wardSelect" class="form-select" required>
-                  <option value="">-- Select Solapur Ward / Prabhag --</option>
-                  <option value="Prabhag 1 - Navi Peth / Budhwar Peth">Prabhag 1 - Navi Peth / Budhwar Peth</option>
-                  <option value="Prabhag 2 - Jule Solapur / Saiful">Prabhag 2 - Jule Solapur / Saiful</option>
-                  <option value="Prabhag 3 - Bhavani Peth / Sakhar Peth">Prabhag 3 - Bhavani Peth / Sakhar Peth</option>
-                  <option value="Prabhag 4 - Saat Rasta / Railway Station">Prabhag 4 - Saat Rasta / Railway Station</option>
-                  <option value="Prabhag 5 - Ashok Chowk / Vijapur Road">Prabhag 5 - Ashok Chowk / Vijapur Road</option>
-                  <option value="Prabhag 6 - Hotgi Road / Majrewadi">Prabhag 6 - Hotgi Road / Majrewadi</option>
-                  <option value="Prabhag 7 - Bale / Shelgi / Ramwadi">Prabhag 7 - Bale / Shelgi / Ramwadi</option>
-                  <option value="Prabhag 8 - Murarji Peth / Siddheshwar Peth">Prabhag 8 - Murarji Peth / Siddheshwar Peth</option>
-                  <option value="Prabhag 9 - Kumtha Naka / Degaon">Prabhag 9 - Kumtha Naka / Degaon</option>
-                  <option value="Prabhag 10 - Soregaon / Kegaon">Prabhag 10 - Soregaon / Kegaon</option>
-                  <option value="Prabhag 11 - Shaniwar Peth / Mangalwar Peth">Prabhag 11 - Shaniwar Peth / Mangalwar Peth</option>
-                  <option value="Prabhag 12 - Kasba / Gurunanak Nagar">Prabhag 12 - Kasba / Gurunanak Nagar</option>
-                </select>
-              </div>
-
-              <div class="form-field">
-                <label class="form-label" for="address">Street Address / Landmark <span class="required">*</span></label>
-                <input type="text" id="address" class="form-input" placeholder="e.g., Near Datta Mandir, Lane No. 4, Saiful" required>
-              </div>
-            </div>
-
-            <!-- Urgency Level -->
-            <div class="form-field">
-              <label class="form-label">Priority / Urgency Level <span class="required">*</span></label>
-              <div class="priority-options">
-                <div class="priority-chip normal selected" data-priority="Normal" onclick="complaintHandler.setPriority('Normal')">
-                  🟢 Normal (Standard SLA)
+            <div id="citizenFormFields">
+              <div class="form-group-title"><span>👤</span> Citizen Contact Information (Auto-Verified)</div>
+              <div class="form-grid-3">
+                <div class="form-field">
+                  <label class="form-label" for="citizenName">Full Name <span class="required">*</span></label>
+                  <input type="text" id="citizenName" class="form-input" placeholder="e.g., Ramesh Kulkarni" required>
                 </div>
-                <div class="priority-chip high" data-priority="High" onclick="complaintHandler.setPriority('High')">
-                  🟡 High (Urgent Attention)
+                <div class="form-field">
+                  <label class="form-label" for="mobileNumber">10-Digit Mobile Number <span class="required">*</span></label>
+                  <input type="tel" id="mobileNumber" class="form-input" placeholder="e.g., 9822012345" pattern="[6-9][0-9]{9}" maxlength="10" required>
+                  <small style="color: #64748B; font-size: 0.75rem;">Verified for status tracking and SMS updates</small>
                 </div>
-                <div class="priority-chip urgent" data-priority="Urgent" onclick="complaintHandler.setPriority('Urgent')">
-                  🔴 Emergency / Hazard (24h Action)
+                <div class="form-field">
+                  <label class="form-label" for="email">Email Address (Optional)</label>
+                  <input type="email" id="email" class="form-input" placeholder="e.g., ramesh@example.com">
                 </div>
               </div>
-              <input type="hidden" id="selectedPriority" value="Normal">
-            </div>
 
-            <!-- Complaint Details -->
-            <div class="form-group-title"><span>✍️</span> Grievance Description</div>
-            <div class="form-field">
-              <label class="form-label" for="complaintTitle">Complaint Subject / Title <span class="required">*</span></label>
-              <input type="text" id="complaintTitle" class="form-input" placeholder="e.g., Low water pressure and erratic supply timing" minlength="5" required>
-            </div>
+              <!-- Grievance Category Selection -->
+              <div class="form-group-title"><span>📂</span> Select Grievance Department / Category <span class="required">*</span></div>
+              <div class="category-picker-grid" id="formCategoryGrid">
+                <!-- Rendered via JS -->
+              </div>
+              <input type="hidden" id="selectedDepartment" value="">
 
-            <div class="form-field">
-              <label class="form-label" for="complaintDescription">Detailed Problem Description <span class="required">*</span></label>
-              <textarea id="complaintDescription" class="form-textarea" placeholder="Please describe the civic issue, affected area, and duration (minimum 15 characters)..." minlength="15" maxlength="1500" required oninput="complaintHandler.updateCharCount(this)"></textarea>
-              <div class="char-counter"><span id="charCount">0</span> / 1500 characters</div>
-            </div>
+              <!-- Location & Ward Selection -->
+              <div class="form-group-title"><span>📍</span> Solapur Ward & Location Details</div>
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label class="form-label" for="wardSelect">Municipal Ward / Prabhag <span class="required">*</span></label>
+                  <select id="wardSelect" class="form-select" required>
+                    <option value="">-- Select Solapur Ward / Prabhag --</option>
+                    <option value="Prabhag 1 - Navi Peth / Budhwar Peth">Prabhag 1 - Navi Peth / Budhwar Peth</option>
+                    <option value="Prabhag 2 - Jule Solapur / Saiful">Prabhag 2 - Jule Solapur / Saiful</option>
+                    <option value="Prabhag 3 - Bhavani Peth / Sakhar Peth">Prabhag 3 - Bhavani Peth / Sakhar Peth</option>
+                    <option value="Prabhag 4 - Saat Rasta / Railway Station">Prabhag 4 - Saat Rasta / Railway Station</option>
+                    <option value="Prabhag 5 - Ashok Chowk / Vijapur Road">Prabhag 5 - Ashok Chowk / Vijapur Road</option>
+                    <option value="Prabhag 6 - Hotgi Road / Majrewadi">Prabhag 6 - Hotgi Road / Majrewadi</option>
+                    <option value="Prabhag 7 - Bale / Shelgi / Ramwadi">Prabhag 7 - Bale / Shelgi / Ramwadi</option>
+                    <option value="Prabhag 8 - Murarji Peth / Siddheshwar Peth">Prabhag 8 - Murarji Peth / Siddheshwar Peth</option>
+                    <option value="Prabhag 9 - Kumtha Naka / Degaon">Prabhag 9 - Kumtha Naka / Degaon</option>
+                    <option value="Prabhag 10 - Soregaon / Kegaon">Prabhag 10 - Soregaon / Kegaon</option>
+                    <option value="Prabhag 11 - Shaniwar Peth / Mangalwar Peth">Prabhag 11 - Shaniwar Peth / Mangalwar Peth</option>
+                    <option value="Prabhag 12 - Kasba / Gurunanak Nagar">Prabhag 12 - Kasba / Gurunanak Nagar</option>
+                  </select>
+                </div>
 
-            <!-- Photo / Document Evidence Upload -->
-            <div class="form-group-title"><span>📸</span> Photo Evidence (Optional but Recommended)</div>
-            <div class="upload-dropzone" onclick="document.getElementById('complaintPhoto').click()">
-              <input type="file" id="complaintPhoto" accept="image/*" style="display: none;" onchange="complaintHandler.handlePhotoUpload(event)">
-              <div class="upload-icon">📷</div>
-              <div class="upload-text">Click to Upload Photo Evidence or Geo-tagged Image</div>
-              <div class="upload-hint">Supports JPG, PNG up to 5MB. Clear photos help field officers resolve faster.</div>
-            </div>
+                <div class="form-field">
+                  <label class="form-label" for="address">Street Address / Landmark <span class="required">*</span></label>
+                  <input type="text" id="address" class="form-input" placeholder="e.g., Near Datta Mandir, Lane No. 4, Saiful" required>
+                </div>
+              </div>
 
-            <div id="photoPreviewContainer" style="display: none;" class="preview-container">
-              <img id="photoPreviewImg" src="" alt="Photo Preview" class="preview-image">
-              <button type="button" class="preview-remove-btn" onclick="complaintHandler.removePhoto()" title="Remove photo">✕</button>
-            </div>
+              <!-- Geotagging Component -->
+              <div class="form-group-title"><span>🛰️</span> Live GPS Incident Geotagging</div>
+              <div class="geotag-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                  <div>
+                    <h4 style="color: #0A3981; font-size: 0.98rem; font-weight: 700;">
+                      Pinpoint Exact Ground Coordinates
+                    </h4>
+                    <p style="color: #64748B; font-size: 0.85rem; margin-top: 2px;">
+                      Captures your real-time latitude & longitude so Solapur field teams can navigate directly to the location.
+                    </p>
+                  </div>
+                  <button type="button" id="btnCaptureLocation" class="btn btn-secondary" onclick="complaintHandler.captureLocation()">
+                    <span>📍</span> Auto-Detect My Live GPS Location (Geo-tag Incident)
+                  </button>
+                </div>
 
-            <!-- Submit Button Bar -->
-            <div style="margin-top: 32px; display: flex; gap: 14px; align-items: center;">
-              <button type="submit" id="btnSubmitGrievance" class="btn btn-primary btn-lg">
-                <span>🚀</span> Submit Grievance
-              </button>
-              <button type="reset" class="btn btn-outline btn-lg" onclick="complaintHandler.resetForm()">
-                Reset Form
-              </button>
+                <div id="geoStatusText" style="display: none; font-size: 0.85rem; margin-top: 10px; color: #1D63B8;"></div>
+
+                <div id="geoPreviewBox" style="display: none; margin-top: 14px; background: #FFFFFF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                      <span class="geotag-preview-badge" id="geoCoordsDisplay">📍 17.659918, 75.906388</span>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                      <a id="geoMapLink" href="#" target="_blank" class="btn btn-outline btn-sm" style="color: #2563EB;">
+                        🗺️ View Captured Pin on Map
+                      </a>
+                      <button type="button" class="btn btn-outline btn-sm" style="color: #EF4444; border-color: #FECACA;" onclick="complaintHandler.clearLocation()">
+                        ✕ Clear Geotag
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Urgency Level -->
+              <div class="form-field" style="margin-top: 20px;">
+                <label class="form-label">Priority / Urgency Level <span class="required">*</span></label>
+                <div class="priority-options">
+                  <div class="priority-chip normal selected" data-priority="Normal" onclick="complaintHandler.setPriority('Normal')">
+                    🟢 Normal (Standard SLA)
+                  </div>
+                  <div class="priority-chip high" data-priority="High" onclick="complaintHandler.setPriority('High')">
+                    🟡 High (Urgent Attention)
+                  </div>
+                  <div class="priority-chip urgent" data-priority="Urgent" onclick="complaintHandler.setPriority('Urgent')">
+                    🔴 Emergency / Hazard (24h Action)
+                  </div>
+                </div>
+                <input type="hidden" id="selectedPriority" value="Normal">
+              </div>
+
+              <!-- Complaint Details -->
+              <div class="form-group-title"><span>✍️</span> Grievance Description</div>
+              <div class="form-field">
+                <label class="form-label" for="complaintTitle">Complaint Subject / Title <span class="required">*</span></label>
+                <input type="text" id="complaintTitle" class="form-input" placeholder="e.g., Low water pressure and erratic supply timing" minlength="5" required>
+              </div>
+
+              <div class="form-field">
+                <label class="form-label" for="complaintDescription">Detailed Problem Description <span class="required">*</span></label>
+                <textarea id="complaintDescription" class="form-textarea" placeholder="Please describe the civic issue, affected area, and duration (minimum 15 characters)..." minlength="15" maxlength="1500" required oninput="complaintHandler.updateCharCount(this)"></textarea>
+                <div class="char-counter"><span id="charCount">0</span> / 1500 characters</div>
+              </div>
+
+              <!-- Photo / Document Evidence Upload -->
+              <div class="form-group-title"><span>📸</span> Photo Evidence (Optional but Recommended)</div>
+              <div class="upload-dropzone" onclick="document.getElementById('complaintPhoto').click()">
+                <input type="file" id="complaintPhoto" accept="image/*" style="display: none;" onchange="complaintHandler.handlePhotoUpload(event)">
+                <div class="upload-icon">📷</div>
+                <div class="upload-text">Click to Upload Photo Evidence or Incident Site Photo</div>
+                <div class="upload-hint">Supports JPG, PNG up to 5MB. Clear photos help field officers resolve faster.</div>
+              </div>
+
+              <div id="photoPreviewContainer" style="display: none;" class="preview-container">
+                <img id="photoPreviewImg" src="" alt="Photo Preview" class="preview-image">
+                <button type="button" class="preview-remove-btn" onclick="complaintHandler.removePhoto()" title="Remove photo">✕</button>
+              </div>
+
+              <!-- Submit Button Bar -->
+              <div style="margin-top: 32px; display: flex; gap: 14px; align-items: center;">
+                <button type="submit" id="btnSubmitGrievance" class="btn btn-primary btn-lg">
+                  <span>🚀</span> Submit Grievance
+                </button>
+                <button type="reset" class="btn btn-outline btn-lg" onclick="complaintHandler.resetForm()">
+                  Reset Form
+                </button>
+              </div>
             </div>
           </form>
         </div>
@@ -316,188 +378,44 @@
         </div>
       </section>
 
-      <!-- ================= VIEW 4: TRANSPARENCY & COMMUNITY FEED ================= -->
-      <section id="view-feed" class="view-section">
-        <div class="section-header">
-          <h2 class="section-title"><span>📢</span> Public Grievance Transparency Feed</h2>
-          <p class="section-subtitle">Live log of recently addressed civic complaints across Solapur. Citizen personal details are masked for privacy.</p>
-        </div>
-
-        <div class="transparency-table-card">
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Token ID</th>
-                  <th>Department</th>
-                  <th>Ward / Area</th>
-                  <th>Issue Summary</th>
-                  <th>Status</th>
-                  <th>Filed On</th>
-                  <th>Citizen Rating</th>
-                </tr>
-              </thead>
-              <tbody id="transparencyTableBody">
-                <!-- Injected via JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Citizen Charter SLAs -->
-        <div class="section-header" style="margin-top: 36px;">
-          <h3 class="section-title"><span>⏱️</span> Solapur Municipal Corporation - Citizen Charter (SLA Resolution Timelines)</h3>
-          <p class="section-subtitle">As per the Maharashtra Right to Public Services Act (RTS), SMC is committed to resolving civic grievances within these stipulated timelines.</p>
-        </div>
-
-        <div class="sla-grid">
-          <div class="sla-card">
-            <div class="sla-dept">💧 Water Supply Failure</div>
-            <div class="sla-time">24 Hours</div>
-            <div class="sla-officer">Executive Engineer (Water Supply)</div>
-          </div>
-          <div class="sla-card">
-            <div class="sla-dept">🚰 Drainage Choke-up / Overflow</div>
-            <div class="sla-time">24 - 48 Hours</div>
-            <div class="sla-officer">Superintendent (Drainage Dept)</div>
-          </div>
-          <div class="sla-card">
-            <div class="sla-dept">🗑️ Garbage Bin Clearance</div>
-            <div class="sla-time">12 - 24 Hours</div>
-            <div class="sla-officer">Chief Sanitation Inspector</div>
-          </div>
-          <div class="sla-card">
-            <div class="sla-dept">💡 Street Light Breakdown</div>
-            <div class="sla-time">24 - 48 Hours</div>
-            <div class="sla-officer">Electrical Maintenance Officer</div>
-          </div>
-          <div class="sla-card">
-            <div class="sla-dept">🛣️ Road Pothole Repair</div>
-            <div class="sla-time">48 - 72 Hours</div>
-            <div class="sla-officer">City Engineer (Roads Division)</div>
-          </div>
-          <div class="sla-card">
-            <div class="sla-dept">🏥 Pest Control & Spraying</div>
-            <div class="sla-time">48 Hours</div>
-            <div class="sla-officer">Health Officer of Health (MOH)</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= VIEW 5: WARDS & DIRECTORY ================= -->
-      <section id="view-directory" class="view-section">
-        <div class="section-header">
-          <h2 class="section-title"><span>📞</span> Solapur Municipal Corporation Directory & Helpline Numbers</h2>
-          <p class="section-subtitle">Direct contact details of municipal zonal offices, emergency cells, and department heads.</p>
-        </div>
-
-        <div class="form-grid-2" style="margin-bottom: 28px;">
-          <div class="stat-card" style="border-left: 4px solid #0A3981;">
-            <div class="stat-icon blue">🚨</div>
-            <div>
-              <h4 style="color: #0A3981; font-size: 1.1rem;">Disaster & Emergency Control Room</h4>
-              <p style="font-size: 0.9rem; color: #475569; margin: 4px 0;">24x7 Emergency line for fire, heavy rain, flood, or building collapse.</p>
-              <div style="font-size: 1.15rem; font-weight: 800; color: #0A3981; margin-top: 6px;">
-                📞 0217-2740300 / 101 / 108
-              </div>
-            </div>
-          </div>
-
-          <div class="stat-card" style="border-left: 4px solid #16A34A;">
-            <div class="stat-icon green">💧</div>
-            <div>
-              <h4 style="color: #0A3981; font-size: 1.1rem;">Water Supply Emergency Cell</h4>
-              <p style="font-size: 0.9rem; color: #475569; margin: 4px 0;">Pipeline burst, tanker booking & emergency water grievances.</p>
-              <div style="font-size: 1.15rem; font-weight: 800; color: #16A34A; margin-top: 6px;">
-                📞 0217-2740315 / 1800-233-0217
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="transparency-table-card">
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Zonal Office</th>
-                  <th>Areas Covered</th>
-                  <th>Zonal Officer</th>
-                  <th>Direct Contact</th>
-                  <th>Office Address</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Zone 1 - Central Solapur</strong></td>
-                  <td>Navi Peth, Budhwar Peth, Shaniwar Peth</td>
-                  <td>Shri. R. V. Deshpande</td>
-                  <td><a href="tel:02172740321">0217-2740321</a></td>
-                  <td>SMC Main HQ, Indrabhuvan, Solapur - 413001</td>
-                </tr>
-                <tr>
-                  <td><strong>Zone 2 - Jule Solapur</strong></td>
-                  <td>Saiful, Vasundhara Nagar, D-Mart road</td>
-                  <td>Shri. P. S. Kulkarni</td>
-                  <td><a href="tel:02172740322">0217-2740322</a></td>
-                  <td>Zonal Office No. 2, Near Saiful Bridge, Jule Solapur</td>
-                </tr>
-                <tr>
-                  <td><strong>Zone 3 - Bhavani Peth</strong></td>
-                  <td>Bhavani Peth, Begum Peth, Sakhar Peth</td>
-                  <td>Smt. S. A. Shaikh</td>
-                  <td><a href="tel:02172740323">0217-2740323</a></td>
-                  <td>Bhavani Peth Ward Office, Near Vegetable Market</td>
-                </tr>
-                <tr>
-                  <td><strong>Zone 4 - Saat Rasta / Railway</strong></td>
-                  <td>Saat Rasta, Modi Khana, Railway Station</td>
-                  <td>Shri. V. M. Mane</td>
-                  <td><a href="tel:02172740324">0217-2740324</a></td>
-                  <td>Saat Rasta Sub-divisional Office, Solapur</td>
-                </tr>
-                <tr>
-                  <td><strong>Zone 5 - Ashok Chowk / Vijapur Rd</strong></td>
-                  <td>Ashok Chowk, Vijapur Road, Dufferin Chowk</td>
-                  <td>Shri. M. K. Birajdar</td>
-                  <td><a href="tel:02172740325">0217-2740325</a></td>
-                  <td>Ashok Chowk Municipal Complex, Solapur</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= VIEW 6: OFFICER / ADMIN PORTAL ================= -->
+      <!-- ================= VIEW 4: ADMIN PORTAL ================= -->
       <section id="view-admin" class="view-section">
-        <!-- Officer Login Form -->
-        <div id="adminLoginSection" class="admin-login-box">
+        <!-- Single Admin Authentication Box -->
+        <div id="adminLoginSection" class="admin-login-box" style="max-width: 480px;">
           <div style="font-size: 2.8rem; margin-bottom: 8px;">🛡️</div>
-          <h3 style="color: #0A3981; font-size: 1.35rem; font-weight: 800; margin-bottom: 4px;">Municipal Officer Portal</h3>
-          <p style="color: #64748B; font-size: 0.88rem; margin-bottom: 24px;">Solapur Municipal Corporation Officer & Engineer Login</p>
+          <h3 style="color: #0A3981; font-size: 1.35rem; font-weight: 800; margin-bottom: 4px;">Municipal Administrator Portal</h3>
+          <p style="color: #64748B; font-size: 0.88rem; margin-bottom: 20px;">Solapur Municipal Corporation • Central Grievance Redressal Administration</p>
 
           <form onsubmit="adminHandler.handleLogin(event)">
             <div class="form-field" style="text-align: left;">
-              <label class="form-label" for="adminUsername">Officer Username</label>
-              <input type="text" id="adminUsername" class="form-input" placeholder="e.g. admin" required>
+              <label class="form-label" for="adminUsername">Administrator Username</label>
+              <input type="text" id="adminUsername" class="form-input" placeholder="e.g. admin" value="admin" required>
             </div>
             <div class="form-field" style="text-align: left;">
-              <label class="form-label" for="adminPassword">Officer Password</label>
-              <input type="password" id="adminPassword" class="form-input" placeholder="••••••••" required>
+              <label class="form-label" for="adminPassword">Administrator Password</label>
+              <input type="password" id="adminPassword" class="form-input" placeholder="••••••••" value="solapur@123" required>
             </div>
-            <div style="margin-bottom: 18px; text-align: left;">
-              <button type="button" class="btn btn-outline btn-sm" onclick="adminHandler.fillDemoCreds()" style="width: 100%;">
-                🔑 One-Click: Auto-fill Demo Credentials (admin / solapur@123)
+
+            <!-- Single Admin One-Click Quick Fill -->
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; margin-bottom: 18px; text-align: left;">
+              <span style="font-size: 0.75rem; text-transform: uppercase; color: #1D63B8; font-weight: 700; display: block; margin-bottom: 6px;">
+                ⚡ Single Admin Credentials:
+              </span>
+              <p style="font-size: 0.82rem; color: #475569; margin-bottom: 8px;">
+                Username: <code>admin</code> &bull; Password: <code>solapur@123</code>
+              </p>
+              <button type="button" class="btn btn-outline btn-sm" style="width: 100%;" onclick="adminHandler.fillDemoCreds()">
+                🔑 Auto-Fill Admin Credentials
               </button>
             </div>
+
             <button type="submit" id="btnAdminLogin" class="btn btn-primary btn-lg" style="width: 100%;">
-              Log In to Dashboard
+              Log In as Municipal Administrator
             </button>
           </form>
         </div>
 
-        <!-- Officer Logged-In Dashboard -->
+        <!-- Admin Logged-In Dashboard -->
         <div id="adminDashboardSection" style="display: none;">
           <!-- Officer Header Bar -->
           <div class="admin-header-bar">
@@ -521,7 +439,7 @@
               <div class="stat-icon blue">📊</div>
               <div>
                 <div class="stat-value" id="adminStatTotal">0</div>
-                <div class="stat-label">Total Assigned</div>
+                <div class="stat-label">Total Complaints</div>
               </div>
             </div>
             <div class="stat-card">
@@ -550,7 +468,7 @@
           <!-- Filter Toolbar -->
           <div class="filter-toolbar">
             <div style="flex: 1; min-width: 200px;">
-              <input type="text" id="adminSearchInput" class="form-input" placeholder="Search by Token, Citizen, Title, Ward..." oninput="adminHandler.applyFilters()">
+              <input type="text" id="adminSearchInput" class="form-input" placeholder="Search by Token, Citizen, Title, Ward, GPS..." oninput="adminHandler.applyFilters()">
             </div>
             <div>
               <select id="adminStatusFilter" class="form-select" onchange="adminHandler.applyFilters()">
@@ -590,7 +508,7 @@
                     <th>Token</th>
                     <th>Citizen Details</th>
                     <th>Department</th>
-                    <th>Ward / Address</th>
+                    <th>Ward / Address & GPS</th>
                     <th>Priority</th>
                     <th>Status</th>
                     <th>Date</th>
@@ -641,6 +559,10 @@
           <span style="color: #64748B;">Ward:</span>
           <strong id="receiptWard" style="color: #0F172A;">--</strong>
         </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span style="color: #64748B;">Geo-tag Incident Location:</span>
+          <span id="receiptGeoVal" style="color: #059669; font-weight: 700;">--</span>
+        </div>
         <div style="display: flex; justify-content: space-between;">
           <span style="color: #64748B;">Registered Date:</span>
           <strong id="receiptDate" style="color: #0F172A;">--</strong>
@@ -661,7 +583,7 @@
     </div>
   </div>
 
-  <!-- Modal 2: Officer Status Update Modal -->
+  <!-- Modal 2: Admin Status Update Modal -->
   <div class="modal-overlay" id="statusModal">
     <div class="modal-card">
       <button class="modal-close-btn" onclick="app.closeModal('statusModal')">✕</button>
@@ -695,11 +617,141 @@
           <textarea id="modalRemarks" class="form-textarea" placeholder="Detail the steps taken, vehicle deployed, or completion report..." required></textarea>
         </div>
 
+        <!-- Work Done Photo Upload Proof -->
+        <div class="form-field">
+          <label class="form-label" for="workDonePhotoInput">
+            📸 Upload Work Done Photo Evidence (Completion Proof)
+          </label>
+          <input type="file" id="workDonePhotoInput" class="form-input" accept="image/*" onchange="adminHandler.handleWorkDonePhotoUpload(event)">
+          <small style="color: #64748B; font-size: 0.78rem; display: block; margin-top: 4px;">
+            Attach photo proof of resolved work (e.g. repaired road, cleared waste, restored pipeline or street light). Max 5MB.
+          </small>
+
+          <div id="workDonePhotoPreviewContainer" style="display: none; margin-top: 10px; border: 2px dashed #059669; border-radius: 8px; padding: 10px; background: #ECFDF5; max-width: 280px;">
+            <div style="font-size: 0.75rem; color: #065F46; font-weight: 700; margin-bottom: 6px;">
+              ✅ Work Done Proof Photo Attached:
+            </div>
+            <img id="workDonePhotoPreviewImg" src="" alt="Work Done Photo Proof" style="width: 100%; max-height: 160px; object-fit: cover; border-radius: 6px; display: block;">
+            <button type="button" class="btn btn-outline btn-sm" style="margin-top: 8px; width: 100%; color: #DC2626; border-color: #FCA5A5; background: #FEF2F2;" onclick="adminHandler.removeWorkDonePhoto()">
+              🗑️ Remove Work Done Photo
+            </button>
+          </div>
+        </div>
+
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
           <button type="button" class="btn btn-outline" onclick="app.closeModal('statusModal')">Cancel</button>
-          <button type="submit" class="btn btn-primary">Update Status</button>
+          <button type="submit" class="btn btn-primary">Update Status & Work Proof</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Citizen Authorization Modal (Login & Register Tabs) -->
+  <div class="modal-overlay" id="citizenAuthModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="app.closeModal('citizenAuthModal')">✕</button>
+
+      <div style="text-align: center; margin-bottom: 16px;">
+        <div style="font-size: 2.2rem; margin-bottom: 4px;">👤</div>
+        <h3 style="color: #0A3981; font-size: 1.3rem; font-weight: 800;">Solapur Citizen Portal</h3>
+        <p style="font-size: 0.85rem; color: #64748B;">Register once to lodge verified complaints, attach GPS location, and track updates.</p>
+      </div>
+
+      <!-- Tab Header -->
+      <div class="auth-tabs-header">
+        <button type="button" id="tabCitizenLogin" class="auth-tab-btn active" onclick="citizenAuth.switchTab('login')">
+          🔑 Citizen Login
+        </button>
+        <button type="button" id="tabCitizenRegister" class="auth-tab-btn" onclick="citizenAuth.switchTab('register')">
+          📝 Citizen Register (New Account)
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <div id="citizenLoginForm">
+        <form onsubmit="citizenAuth.handleLogin(event)">
+          <div class="form-field">
+            <label class="form-label" for="citLoginIdentifier">Mobile Number or Email</label>
+            <input type="text" id="citLoginIdentifier" class="form-input" placeholder="e.g. 9822012345 or ramesh.k@example.com" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="citLoginPassword">Password</label>
+            <input type="password" id="citLoginPassword" class="form-input" placeholder="••••••••" required>
+          </div>
+          <div style="margin-bottom: 16px;">
+            <button type="button" class="btn btn-outline btn-sm" style="width: 100%;" onclick="citizenAuth.fillDemoCitizen()">
+              ⚡ One-Click Auto-Fill Demo Citizen (9822012345 / citizen@123)
+            </button>
+          </div>
+          <button type="submit" id="btnCitizenLogin" class="btn btn-primary btn-lg" style="width: 100%;">
+            Log In to Citizen Account
+          </button>
+        </form>
+      </div>
+
+      <!-- Register Form -->
+      <div id="citizenRegisterForm" style="display: none;">
+        <form onsubmit="citizenAuth.handleRegister(event)">
+          <div class="form-field">
+            <label class="form-label" for="citRegName">Full Name <span class="required">*</span></label>
+            <input type="text" id="citRegName" class="form-input" placeholder="e.g. Ramesh Kulkarni" required>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-field">
+              <label class="form-label" for="citRegMobile">10-Digit Mobile <span class="required">*</span></label>
+              <input type="tel" id="citRegMobile" class="form-input" placeholder="e.g. 9822012345" pattern="[6-9][0-9]{9}" maxlength="10" required>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="citRegEmail">Email Address</label>
+              <input type="email" id="citRegEmail" class="form-input" placeholder="e.g. ramesh@example.com">
+            </div>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="citRegWard">Default Solapur Ward / Prabhag <span class="required">*</span></label>
+            <select id="citRegWard" class="form-select" required>
+              <option value="">-- Select Your Ward --</option>
+              <option value="Prabhag 1 - Navi Peth / Budhwar Peth">Prabhag 1 - Navi Peth / Budhwar Peth</option>
+              <option value="Prabhag 2 - Jule Solapur / Saiful">Prabhag 2 - Jule Solapur / Saiful</option>
+              <option value="Prabhag 3 - Bhavani Peth / Sakhar Peth">Prabhag 3 - Bhavani Peth / Sakhar Peth</option>
+              <option value="Prabhag 4 - Saat Rasta / Railway Station">Prabhag 4 - Saat Rasta / Railway Station</option>
+              <option value="Prabhag 5 - Ashok Chowk / Vijapur Road">Prabhag 5 - Ashok Chowk / Vijapur Road</option>
+              <option value="Prabhag 6 - Hotgi Road / Majrewadi">Prabhag 6 - Hotgi Road / Majrewadi</option>
+              <option value="Prabhag 7 - Bale / Shelgi / Ramwadi">Prabhag 7 - Bale / Shelgi / Ramwadi</option>
+              <option value="Prabhag 8 - Murarji Peth / Siddheshwar Peth">Prabhag 8 - Murarji Peth / Siddheshwar Peth</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="citRegAddress">Residential Address / Landmark</label>
+            <input type="text" id="citRegAddress" class="form-input" placeholder="e.g. Plot 42, Saiful, Jule Solapur">
+          </div>
+          <div class="form-grid-2">
+            <div class="form-field">
+              <label class="form-label" for="citRegPassword">Password (min 6 chars) <span class="required">*</span></label>
+              <input type="password" id="citRegPassword" class="form-input" minlength="6" placeholder="••••••••" required>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="citRegConfirmPassword">Confirm Password <span class="required">*</span></label>
+              <input type="password" id="citRegConfirmPassword" class="form-input" minlength="6" placeholder="••••••••" required>
+            </div>
+          </div>
+          <button type="submit" id="btnCitizenRegister" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 6px;">
+            Register & Continue
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Citizen My Complaints List -->
+  <div class="modal-overlay" id="myComplaintsModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="app.closeModal('myComplaintsModal')">✕</button>
+      <h3 style="color: #0A3981; font-size: 1.3rem; font-weight: 800; margin-bottom: 4px;">My Registered Grievances</h3>
+      <p style="color: #64748B; font-size: 0.85rem; margin-bottom: 18px;">All complaints submitted under your registered citizen profile.</p>
+
+      <div id="myComplaintsList" style="max-height: 60vh; overflow-y: auto;">
+        <!-- Injected via citizenAuth.js -->
+      </div>
     </div>
   </div>
 
@@ -709,7 +761,7 @@
   <!-- ================= FOOTER ================= -->
   <footer class="main-footer">
     <div class="container">
-      <div class="footer-grid">
+      <div class="footer-grid" style="grid-template-columns: 2fr 1fr 1fr;">
         <div class="footer-brand">
           <h4>Solapur Municipal Corporation</h4>
           <p>
@@ -722,17 +774,17 @@
         </div>
 
         <div class="footer-col">
-          <h5>Citizen Services</h5>
+          <h5>Quick Citizen Links</h5>
           <ul class="footer-links">
-            <li><a href="#file" onclick="app.showView('file')">Lodge New Grievance</a></li>
-            <li><a href="#track" onclick="app.showView('track')">Track Grievance Status</a></li>
-            <li><a href="#feed" onclick="app.showView('feed')">Citizen Charter (SLAs)</a></li>
-            <li><a href="#directory" onclick="app.showView('directory')">Zonal Office Contacts</a></li>
+            <li><a href="#home" onclick="app.showView('home')">Home</a></li>
+            <li><a href="#file" onclick="app.showView('file')">Lodge Grievance</a></li>
+            <li><a href="#track" onclick="app.showView('track')">Track Complaint Status</a></li>
+            <li><a href="#admin" onclick="app.showView('admin')">Admin Portal</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h5>Departments</h5>
+          <h5>Key Departments</h5>
           <ul class="footer-links">
             <li><a href="#file" onclick="app.selectCategoryAndGo('Water Supply')">Water Supply</a></li>
             <li><a href="#file" onclick="app.selectCategoryAndGo('Drainage & Sewerage')">Drainage & Sewage</a></li>
@@ -740,18 +792,6 @@
             <li><a href="#file" onclick="app.selectCategoryAndGo('Roads & Potholes')">Roads & Potholes</a></li>
             <li><a href="#file" onclick="app.selectCategoryAndGo('Street Lighting')">Street Lighting</a></li>
           </ul>
-        </div>
-
-        <div class="footer-col">
-          <h5>e-Governance</h5>
-          <p style="font-size: 0.85rem; line-height: 1.6; color: #94A3B8;">
-            Complies with the Maharashtra Right to Public Services Act (RTS). All grievances are timestamped and monitored by the Municipal Commissioner’s Office.
-          </p>
-          <div style="margin-top: 14px;">
-            <button class="btn btn-secondary btn-sm" onclick="app.showView('admin')">
-              🛡️ Official Staff Login
-            </button>
-          </div>
         </div>
       </div>
 
@@ -763,6 +803,7 @@
 
   <!-- Scripts -->
   <script src="js/api.js"></script>
+  <script src="js/citizenAuth.js"></script>
   <script src="js/app.js"></script>
   <script src="js/complaint.js"></script>
   <script src="js/tracking.js"></script>

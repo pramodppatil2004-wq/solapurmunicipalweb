@@ -8,9 +8,17 @@ const api = {
       'Content-Type': 'application/json'
     };
 
-    const token = localStorage.getItem('smc_officer_token');
-    if (token) {
-      defaultHeaders['Authorization'] = `Bearer ${token}`;
+    // Determine appropriate authorization token
+    const isOfficerReq = endpoint.includes('/auth/login') || endpoint.includes('/auth/verify') || (options.authType === 'officer');
+    const officerToken = localStorage.getItem('smc_officer_token');
+    const citizenToken = localStorage.getItem('smc_citizen_token');
+
+    if (isOfficerReq && officerToken) {
+      defaultHeaders['Authorization'] = `Bearer ${officerToken}`;
+    } else if (citizenToken) {
+      defaultHeaders['Authorization'] = `Bearer ${citizenToken}`;
+    } else if (officerToken) {
+      defaultHeaders['Authorization'] = `Bearer ${officerToken}`;
     }
 
     const config = {
@@ -34,7 +42,7 @@ const api = {
     }
   },
 
-  // Get live stats and transparency feed
+  // Get live stats
   async getStats() {
     return this.request('/stats');
   },
@@ -49,7 +57,12 @@ const api = {
     if (params.search) query.append('search', params.search);
 
     const qs = query.toString() ? `?${query.toString()}` : '';
-    return this.request(`/grievances${qs}`);
+    return this.request(`/grievances${qs}`, { authType: 'officer' });
+  },
+
+  // Get grievances lodged by logged in citizen
+  async getMyGrievances() {
+    return this.request('/grievances/my');
   },
 
   // Track single or multiple grievances by Token or Mobile
@@ -70,7 +83,8 @@ const api = {
   async updateStatus(id, updateData) {
     return this.request(`/grievances/${id}/status`, {
       method: 'PATCH',
-      body: JSON.stringify(updateData)
+      body: JSON.stringify(updateData),
+      authType: 'officer'
     });
   },
 
@@ -82,6 +96,27 @@ const api = {
     });
   },
 
+  // Citizen Registration
+  async citizenRegister(userData) {
+    return this.request('/auth/citizen/register', {
+      method: 'POST',
+      body: JSON.stringify(userData)
+    });
+  },
+
+  // Citizen Login
+  async citizenLogin(identifier, password) {
+    return this.request('/auth/citizen/login', {
+      method: 'POST',
+      body: JSON.stringify({ identifier, password })
+    });
+  },
+
+  // Verify Citizen Session
+  async citizenVerify() {
+    return this.request('/auth/citizen/verify');
+  },
+
   // Officer login
   async login(username, password) {
     return this.request('/auth/login', {
@@ -90,8 +125,22 @@ const api = {
     });
   },
 
-  // Verify active session
+  // Officer / Staff Registration
+  async adminRegister(officerData) {
+    return this.request('/auth/admin/register', {
+      method: 'POST',
+      body: JSON.stringify(officerData),
+      authType: 'officer'
+    });
+  },
+
+  // Verify Officer active session
   async verifySession() {
-    return this.request('/auth/verify');
+    return this.request('/auth/verify', { authType: 'officer' });
+  },
+
+  // Get all registered officers
+  async getOfficers() {
+    return this.request('/auth/admin/officers', { authType: 'officer' });
   }
 };
